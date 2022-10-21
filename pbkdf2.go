@@ -49,3 +49,21 @@ func Pbkdf2Hash512(password string, salt []byte, iter int) string {
 	// convert the hashed password to a hex string
 	return hex.EncodeToString(dk)
 }
+
+// Pbkdf2Match256 validated the given password against the given hash (256-bit hash).
+func Pbkdf2Match256(hash string, password string, salt []byte, iter int) bool {
+	// compute a hash of the given password
+	hashTwo := Pbkdf2Hash256(password, salt, iter)
+
+	// compate the two hashes
+	return hash == hashTwo
+}
+
+// Pbkdf2Match512 validated the given password against the given hash (512-bit hash).
+func Pbkdf2Match512(hash string, password string, salt []byte, iter int) bool {
+	// compute a hash of the given password
+	hashTwo := Pbkdf2Hash512(password, salt, iter)
+
+	// compate the two hashes
+	return hash == hashTwo
+}
