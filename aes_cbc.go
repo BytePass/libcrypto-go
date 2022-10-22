@@ -121,5 +121,11 @@ func PKCS5Padding(cipherText []byte, blockSize int) []byte {
 // Trim padding from the cipher text
 func PKCS5Trimming(encrypt []byte) []byte {
 	padding := encrypt[len(encrypt)-1]
+
+	// don't panic if text if invalid
+	if padding > 16 {
+		return encrypt
+	}
+
 	return encrypt[:len(encrypt)-int(padding)]
 }

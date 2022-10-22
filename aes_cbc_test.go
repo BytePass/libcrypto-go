@@ -9,13 +9,9 @@ import (
 func TestAesCbc(t *testing.T) {
 	plainText := "hello world"
 
-	saltSize := 16
-	salt, err := libcrypto.GenerateSalt(saltSize)
-	if err != nil {
-		t.Errorf("Failed to generate salt: %v", err)
-	}
+	salt := []byte("salt")
 
-	key := libcrypto.Pbkdf2Hash256("password", salt, 100000)
+	key := libcrypto.Pbkdf2Hash256("secret passphrase", salt, 1000)
 
 	cipherText, err := libcrypto.EncryptAesCbc(key, plainText)
 	if err != nil {
@@ -24,10 +20,28 @@ func TestAesCbc(t *testing.T) {
 
 	clearText, err := libcrypto.DecryptAesCbc(key, cipherText)
 	if err != nil {
-		t.Errorf("Failed to encrypt using aes cbc: %v", err)
+		t.Errorf("Failed to decrypt using aes cbc: %v", err)
 	}
 
 	if clearText != plainText {
 		t.Error("Decrypted text and input text aren't the same")
+	}
+
+	println(cipherText)
+}
+
+func TestAesCbcDecrypt(t *testing.T) {
+	cipherText := "ceb5156163e045c920cea4748ae302c7e210b4d521925bc342c71145aef3952d"
+
+	salt := []byte("salt")
+	key := libcrypto.Pbkdf2Hash256("secret passphrase", salt, 1000)
+
+	cipherText, err := libcrypto.DecryptAesCbc(key, cipherText)
+	if err != nil {
+		t.Errorf("Failed to decrypt using aes cbc: %v", err)
+	}
+
+	if cipherText != "hello world" {
+		t.Error("Invalid decrypted text")
 	}
 }
