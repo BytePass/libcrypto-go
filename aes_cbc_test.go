@@ -26,8 +26,6 @@ func TestAesCbc(t *testing.T) {
 	if clearText != plainText {
 		t.Error("Decrypted text and input text aren't the same")
 	}
-
-	println(cipherText)
 }
 
 func TestAesCbcDecrypt(t *testing.T) {
