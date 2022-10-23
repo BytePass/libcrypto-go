@@ -8,7 +8,7 @@ import (
 	"golang.org/x/crypto/pbkdf2"
 )
 
-// HashPassword returns a PBKDF2-SHA256 hash of the given password.
+// Pbkdf2Hash256 returns a PBKDF2-SHA256 hash of the given password.
 //
 //	saltSize := 16
 //	salt, err := GenerateSalt(saltSize)
@@ -29,7 +29,7 @@ func Pbkdf2Hash256(password string, salt []byte, iter int) string {
 	return hex.EncodeToString(dk)
 }
 
-// HashPassword returns a PBKDF2-SHA512 hash of the given password.
+// Pbkdf2Hash512 returns a PBKDF2-SHA512 hash of the given password.
 //
 //	saltSize := 16
 //	salt, err := GenerateSalt(saltSize)
@@ -50,7 +50,7 @@ func Pbkdf2Hash512(password string, salt []byte, iter int) string {
 	return hex.EncodeToString(dk)
 }
 
-// Pbkdf2Match256 validated the given password against the given hash (256-bit hash).
+// Pbkdf2Match256 validates the given password against the given hash (256-bit hash).
 func Pbkdf2Match256(hash string, password string, salt []byte, iter int) bool {
 	// compute a hash of the given password
 	hashTwo := Pbkdf2Hash256(password, salt, iter)
@@ -59,7 +59,7 @@ func Pbkdf2Match256(hash string, password string, salt []byte, iter int) bool {
 	return hash == hashTwo
 }
 
-// Pbkdf2Match512 validated the given password against the given hash (512-bit hash).
+// Pbkdf2Match512 validates the given password against the given hash (512-bit hash).
 func Pbkdf2Match512(hash string, password string, salt []byte, iter int) bool {
 	// compute a hash of the given password
 	hashTwo := Pbkdf2Hash512(password, salt, iter)

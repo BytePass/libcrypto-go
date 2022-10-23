@@ -10,7 +10,7 @@ import (
 	"io"
 )
 
-// Encrypt text using AES-CBC
+// EncryptAesCbc returns a cipher text.
 //
 //	saltSize := 16
 //	salt, err := libcrypto.GenerateSalt(saltSize)
@@ -65,7 +65,7 @@ func EncryptAesCbc(key string, clearText string) (string, error) {
 	return hex.EncodeToString(cipherText), nil
 }
 
-// Decrypt the AES-CBC cipher text
+// DecryptAesCbc returns a decrypted text.
 //
 //	key := "key..."
 //	cipherText := "cipher text..."
@@ -111,21 +111,28 @@ func DecryptAesCbc(key string, cipherText string) (string, error) {
 	return string(plainText), nil
 }
 
-// Add padding to the cipher text
-func PKCS5Padding(cipherText []byte, blockSize int) []byte {
-	padding := blockSize - len(cipherText)%blockSize
+// PKCS5Padding returns a padded text.
+func PKCS5Padding(clearText []byte, blockSize int) []byte {
+	// get padding length
+	padding := blockSize - len(clearText)%blockSize
+
+	// create a padding array
 	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
-	return append(cipherText, padtext...)
+
+	// add padding to the clear text
+	return append(clearText, padtext...)
 }
 
-// Trim padding from the cipher text
+// PKCS5Trimming returns a encrypted bytes without padding.
 func PKCS5Trimming(encrypt []byte) []byte {
+	// get padding length
 	padding := encrypt[len(encrypt)-1]
 
-	// don't panic if text if invalid
+	// don't panic if encrypted text is invalid
 	if padding > 16 {
 		return encrypt
 	}
 
+	// returns a encrypted bytes without padding
 	return encrypt[:len(encrypt)-int(padding)]
 }
