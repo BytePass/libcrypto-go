@@ -53,7 +53,7 @@ func EncryptAesCbc(key string, clearText string) (string, error) {
 	// add initialization vector to the cipher text
 	iv := cipherText[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		return "", nil
+		return "", err
 	}
 
 	// returns a BlockMode which encrypts in cipher block chaining mode
